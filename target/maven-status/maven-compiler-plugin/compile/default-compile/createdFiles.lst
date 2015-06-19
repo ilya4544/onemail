@@ -1,3 +1,4 @@
+domain\Mail.class
 domain\Order.class
 servlet\GetUserInfoServlet.class
 servlet\MakeOrderServlet.class
@@ -6,5 +7,6 @@ servlet\AcceptWorkServlet.class
 servlet\GetUserInfoServlet$UserProfile.class
 domain\State.class
 domain\User.class
+servlet\GetEmailsServlet.class
 servlet\UpdateLocationServlet.class
 servlet\BeginWorkServlet.class

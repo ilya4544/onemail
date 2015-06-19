@@ -4,20 +4,30 @@ package domain;
  * Created by Ilya on 19.06.2015.
  */
 public class Mail {
-    private String email;
+    private String to;
+    private String from;
     private String data;
 
-    public Mail(String email, String data) {
-        this.email = email;
+    public Mail(String to, String from, String data) {
+        this.to = to;
+        this.from = from;
         this.data = data;
     }
 
-    public String getEmail() {
-        return email;
+    public String getTo() {
+        return to;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     public String getData() {
