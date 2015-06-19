@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <packaging>war</packaging>
-    <groupId>shipntrip</groupId>
-    <artifactId>shipntrip</artifactId>
+    <groupId>onemail</groupId>
+    <artifactId>onemail</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
