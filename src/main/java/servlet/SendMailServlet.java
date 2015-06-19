@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
 
-@WebServlet("/upload")
+@WebServlet("/sendMail")
 @MultipartConfig
 public class SendMailServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
