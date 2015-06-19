@@ -7,9 +7,7 @@ package servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.*;
-import com.mongodb.util.JSON;
-import domain.Order;
-import domain.State;
+import domain.Mail;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,7 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GetEmailsServlet extends HttpServlet {
@@ -37,7 +36,6 @@ public class GetEmailsServlet extends HttpServlet {
             // TODO Auto-generated catch block
             e.printStackTrace();
 
-            ///ffffff
         } catch (MongoException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -46,31 +44,33 @@ public class GetEmailsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        //super.doGet(req, resp);
+
+        String to = req.getParameter("email");
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        PrintWriter out = resp.getWriter();
+        Gson gson = new GsonBuilder().create();
+        DBCollection emails = db.getCollection("mails");
+        BasicDBObject queryEmail = new BasicDBObject("to", to);
+
+        DBCursor cursorEmail = emails.find(queryEmail);
+
+        List<Mail> mailList = new ArrayList<Mail>();
+
+        while (cursorEmail.hasNext()) {
+            DBObject cur = cursorEmail.next();
+            cur.removeField("_id");
+            mailList.add(gson.fromJson(cur.toString(), Mail.class));
+        }
+        out.append(gson.toJson(mailList));
+        out.close();
+
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String login = req.getParameter("login");
-        String title = req.getParameter("title");
-        PrintWriter out = resp.getWriter();
-        Gson gson = new GsonBuilder().create();
-
-        DBCollection orders = db.getCollection("orders");
-
-        BasicDBObject auth = new BasicDBObject("title", title).append("owner",login);
-        try {
-            DBObject userObj = orders.findOne(auth);
-            userObj.removeField("_id");
-            Order order = gson.fromJson(userObj.toString(), Order.class);
-            order.setStatus("finished");
-            // Send money
-            orders.update(auth, (DBObject) JSON.parse(gson.toJson(order)));
-            out.append(gson.toJson(new State("ok")));
-        } catch (Exception e) {
-            out.append(gson.toJson(new State(e.getMessage())));
-        } finally {
-            out.close();
-        }
+        super.doPost(req, resp);
     }
 }

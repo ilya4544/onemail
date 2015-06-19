@@ -8,41 +8,19 @@
         <servlet-name>servlet.GetUserInfoServlet</servlet-name>
         <servlet-class>servlet.GetUserInfoServlet</servlet-class>
     </servlet>
+
     <servlet>
-        <servlet-name>servlet.MakeOrderServlet</servlet-name>
-        <servlet-class>servlet.MakeOrderServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>servlet.UpdateLocationServlet</servlet-name>
-        <servlet-class>servlet.UpdateLocationServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>servlet.BeginWorkServlet</servlet-name>
-        <servlet-class>servlet.BeginWorkServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>servlet.AcceptWorkServlet</servlet-name>
-        <servlet-class>servlet.AcceptWorkServlet</servlet-class>
+        <servlet-name>servlet.GetEmailsServlet</servlet-name>
+        <servlet-class>servlet.GetEmailsServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>servlet.GetUserInfoServlet</servlet-name>
         <url-pattern>/getUserInfo</url-pattern>
     </servlet-mapping>
+
     <servlet-mapping>
-        <servlet-name>servlet.MakeOrderServlet</servlet-name>
-        <url-pattern>/makeOrder</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>servlet.UpdateLocationServlet</servlet-name>
-        <url-pattern>/updateLocation</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>servlet.AcceptWorkServlet</servlet-name>
-        <url-pattern>/acceptWork</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>servlet.BeginWorkServlet</servlet-name>
-        <url-pattern>/beginWork</url-pattern>
+        <servlet-name>servlet.GetEmailsServlet</servlet-name>
+        <url-pattern>/getEmails</url-pattern>
     </servlet-mapping>
 </web-app>

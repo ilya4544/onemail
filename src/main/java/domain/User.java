@@ -4,57 +4,39 @@ package domain;
  * Created by Ilya on 20.03.2015.
  */
 public class User {
-    private String login;
+    private String email;
+    private String pass;
     private String name;
-    private String currentLocation;
-    private String nextLocation;
-    private String date;
 
-    public User(String login, String name, String currentLocation, String nextLocation, String date) {
-        this.login = login;
+
+    public User(String email,String pass, String name) {
+        this.email = email;
+        this.pass = pass;
         this.name = name;
-        this.currentLocation = currentLocation;
-        this.nextLocation = nextLocation;
-        this.date = date;
+
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCurrentLocation() {
-        return currentLocation;
-    }
-
-    public void setCurrentLocation(String currentLocation) {
-        this.currentLocation = currentLocation;
-    }
-
-    public String getNextLocation() {
-        return nextLocation;
-    }
-
-    public void setNextLocation(String nextLocation) {
-        this.nextLocation = nextLocation;
     }
 }

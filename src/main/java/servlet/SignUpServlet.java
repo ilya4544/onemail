@@ -44,15 +44,16 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String login = req.getParameter("login");
+        String email = req.getParameter("email");
+        String pass = req.getParameter("pass");
         String name = req.getParameter("name");
-        String location = req.getParameter("location");
+
         PrintWriter out = resp.getWriter();
         Gson gson = new GsonBuilder().create();
 
         DBCollection users = db.getCollection("users");
         try {
-            users.insert((DBObject)new User(login, name,location, null, null));
+            users.insert((DBObject) new User(email, pass, name));
             out.append(gson.toJson(new State("ok")));
         } catch (Exception e) {
             out.append(gson.toJson(new State(e.getMessage())));
