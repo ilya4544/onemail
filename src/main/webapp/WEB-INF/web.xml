@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+        PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+    <servlet>
+        <servlet-name>servlet.GetUserInfoServlet</servlet-name>
+        <servlet-class>servlet.GetUserInfoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>servlet.MakeOrderServlet</servlet-name>
+        <servlet-class>servlet.MakeOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>servlet.UpdateLocationServlet</servlet-name>
+        <servlet-class>servlet.UpdateLocationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>servlet.BeginWorkServlet</servlet-name>
+        <servlet-class>servlet.BeginWorkServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>servlet.AcceptWorkServlet</servlet-name>
+        <servlet-class>servlet.AcceptWorkServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>servlet.GetUserInfoServlet</servlet-name>
+        <url-pattern>/getUserInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>servlet.MakeOrderServlet</servlet-name>
+        <url-pattern>/makeOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>servlet.UpdateLocationServlet</servlet-name>
+        <url-pattern>/updateLocation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>servlet.AcceptWorkServlet</servlet-name>
+        <url-pattern>/acceptWork</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>servlet.BeginWorkServlet</servlet-name>
+        <url-pattern>/beginWork</url-pattern>
+    </servlet-mapping>
+</web-app>
