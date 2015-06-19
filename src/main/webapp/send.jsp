@@ -13,7 +13,11 @@
     <br>
     <strong>Your message:</strong><input type="text" name="data" />
     <br/>
-    <strong>Your file:</strong><input type="file" name="file" />
+    <strong>Your file:</strong><input type="file" name="file1" />
+    <br/>
+    <strong>Your file:</strong><input type="file" name="file2" />
+    <br/>
+    <strong>Your file:</strong><input type="file" name="file3" />
     <br/>
     <input type="submit" />
 </form>

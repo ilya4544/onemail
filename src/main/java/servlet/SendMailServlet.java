@@ -3,6 +3,9 @@ package servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.*;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSInputFile;
+import com.mongodb.util.JSON;
 import domain.Company;
 import domain.Document;
 import domain.Mail;
@@ -18,11 +21,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/sendMail")
 @MultipartConfig
@@ -62,30 +64,32 @@ public class SendMailServlet extends HttpServlet {
         DBCollection mails = db.getCollection("mails");
         DBCollection documents = db.getCollection("documents");
 
+        ObjectId id = ObjectId.get();
 
-        Part filePart = req.getPart("file"); // Retrieves <input type="file" name="file">
-        String fileName = getFileName(filePart);
-        InputStream fileContent = filePart.getInputStream();
+        GridFS gfsFiles = new GridFS(db, id.toString());//namespace
+        ArrayList<Part> parts = (ArrayList<Part>) req.getParts();
+        for (int i = 3; i < req.getParts().size(); i++) {
+            Part filePart = parts.get(i); // Retrieves <input type="file" name="file">
+            //if(i  < 3 ) continue;//because of {to,from,data} - not needed info,we want to save only file
+            String fileName = getFileName(filePart);
+            InputStream fileContent = filePart.getInputStream();
+            GridFSInputFile gfsFile = gfsFiles.createFile(fileContent);
+            gfsFile.setFilename(fileName);
+            gfsFile.save();
 
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        byte[] buffer = new byte[10240];
-        for (int length; (length = fileContent.read(buffer)) > 0; ) output.write(buffer, 0, length);
-
-
-        try {
-            DBObject createdMail = (DBObject) new Mail(to, from, data);
-            mails.insert(createdMail);
-            ObjectId id = (ObjectId) createdMail.get("_id");
-            DBObject createdDoc = (DBObject) new Document(id, output.toByteArray());
-            documents.insert((DBObject) createdDoc);
-
-
-            out.append(gson.toJson(new State("ok")));
-        } catch (Exception e) {
-            out.append(gson.toJson(new State(e.getMessage())));
-        } finally {
-            out.close();
         }
+        Mail createdMail = new Mail(to, from, data, id.toString(), req.getParts().size() - 3);
+        BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(createdMail));
+        mails.insert(obj1);
+
+
+        out.append(gson.toJson(new State("ok")));
+
+        //out.append(gson.toJson(new State(e.getMessage())));
+
+
+        out.close();
+
     }
 
 

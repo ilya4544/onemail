@@ -1,14 +1,13 @@
 package servlet;
 
-/**
- * Created by freeemahn on 19.06.15.
- */
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSFile;
 import domain.Mail;
+import org.bson.types.ObjectId;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -16,13 +15,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class GetEmailsServlet extends HttpServlet {
+/**
+ * Created by freeemahn on 20.06.15.
+ */
+public class DownloadServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     MongoClient m = null;
@@ -46,28 +48,22 @@ public class GetEmailsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doGet(req, resp);
+        String id = req.getParameter("id");//id of email
+        int cur = Integer.parseInt(req.getParameter("current"));//attachment number
+        GridFS gfsAttachments = new GridFS(db, id);//all of attachments
+        DBCursor cursor = gfsAttachments.getFileList();
+        int i = 0;
 
-        String to = req.getParameter("email");
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        PrintWriter out = resp.getWriter();
-        Gson gson = new GsonBuilder().create();
-        DBCollection emails = db.getCollection("mails");
-
-
-        BasicDBObject queryEmail = new BasicDBObject("to", to);
-        DBCursor cursorEmail = emails.find(queryEmail);
-
-        List<Mail> mailList = new ArrayList<Mail>();
-
-        while (cursorEmail.hasNext()) {
-            DBObject cur = cursorEmail.next();
-            cur.removeField("_id");
-            mailList.add(gson.fromJson(cur.toString(), Mail.class));
+        while (cursor.hasNext() && i < cur) {
+            cursor.next();
+            i++;
         }
-
-        out.append(gson.toJson(mailList));
-        out.close();
+        ObjectId objId = (ObjectId) (cursor.curr().get("_id"));
+        GridFSDBFile f = gfsAttachments.findOne(objId);
+        resp.setHeader("Content-Disposition", "attachment; filename=" + f.getFilename());
+        OutputStream outStream = resp.getOutputStream();
+        f.writeTo(outStream);
+        outStream.close();
 
 
     }

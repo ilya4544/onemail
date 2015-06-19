@@ -20,6 +20,12 @@
     </servlet>
 
 
+
+    <servlet>
+        <servlet-name>servlet.DownloadServlet</servlet-name>
+        <servlet-class>servlet.DownloadServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>servlet.GetUserInfoServlet</servlet-name>
         <url-pattern>/getUserInfo</url-pattern>
@@ -33,5 +39,11 @@
     <servlet-mapping>
         <servlet-name>servlet.SendMailServlet</servlet-name>
         <url-pattern>/sendMail</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>servlet.DownloadServlet</servlet-name>
+        <url-pattern>/download</url-pattern>
     </servlet-mapping>
 </web-app>
