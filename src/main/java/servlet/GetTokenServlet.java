@@ -111,7 +111,7 @@ public class GetTokenServlet extends HttpServlet {
         User user = new User(token.getUsersIdentifier(), token, token.getId_token(), "VASYA", "gordon.pav@gmail.com");//wow
         BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(user));
         users.insert(obj1);
-        resp.sendRedirect("/browse/test");
+        resp.sendRedirect("/sign/test");
 
 
     }

@@ -39,6 +39,11 @@
     </servlet>
 
 
+    <servlet>
+        <servlet-name>servlet.DeleteServlet</servlet-name>
+        <servlet-class>servlet.DeleteServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>servlet.GetUserInfoServlet</servlet-name>
         <url-pattern>/getUserInfo</url-pattern>
@@ -72,5 +77,10 @@
     <servlet-mapping>
         <servlet-name>servlet.GetTokenServlet</servlet-name>
         <url-pattern>/getToken</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>servlet.DeleteServlet</servlet-name>
+        <url-pattern>/delete</url-pattern>
     </servlet-mapping>
 </web-app>
