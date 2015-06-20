@@ -6,6 +6,7 @@ import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import domain.Mail;
+import domain.State;
 import org.bson.BSONObject;
 import org.bson.types.ObjectId;
 
@@ -52,19 +53,20 @@ public class OpenEmailServlet extends HttpServlet {
 
 
         BasicDBObject query = new BasicDBObject();
-        query.put("_id", new ObjectId(id));
-        //DBObject mail = emails.findOne(query);
-        //out.append(mail.toString());
-        BasicDBObject newDocument = new BasicDBObject();
-        newDocument.append("$set", new BasicDBObject().replace("is_read", true));
+        try {
+            query.put("_id", new ObjectId(id));
+            BasicDBObject newDocument = new BasicDBObject();
+            newDocument.append("$set", new BasicDBObject().append("is_read", true));
 
 
+            emails.update(query, newDocument);
+            out.append(gson.toJson(new State("ok")));
 
-        emails.update(query, newDocument);
-
-
-        out.close();
-
+        } catch (Exception e) {
+            out.append(gson.toJson(new State("error")));
+        } finally {
+            out.close();
+        }
 
     }
 

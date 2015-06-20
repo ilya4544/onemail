@@ -9,13 +9,13 @@
 <h1>Send an email</h1>
 
 <form action="sendMail" method="post" enctype="multipart/form-data">
-    <strong>To:</strong><input type="text" name="to"/>
+    <input type="text" placeholder="To" name="to"/>
     <br>
-    <strong>From:</strong><input type="text" name="from"/>
+    <input type="text" placeholder="From" name="from"/>
     <br>
-    <strong>Title</strong><input type="text" name="title"/>
+    <input type="text" placeholder="Title" name="title"/>
     <br/>
-    <strong>Your message:</strong><input type="text" name="content"/>
+    <textarea cols="40" rows="5" type="text" name="content" placeholder="Message"></textarea>
     <br/>
 
     <div id="files">

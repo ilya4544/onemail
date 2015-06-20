@@ -56,6 +56,9 @@ public class SendMailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        req.setCharacterEncoding("UTF-8");//wow
+        resp.setCharacterEncoding("UTF-8");
+
         String to = req.getParameter("to");
         String from = req.getParameter("from");
         String title = req.getParameter("title");
@@ -85,12 +88,10 @@ public class SendMailServlet extends HttpServlet {
             filesCount++;
 
         }
-        createdMail = new Mail(null,to, from, title, content, id.toString(), filesCount, new Date(), false);
+        createdMail = new Mail(null, to, from, title, content, id.toString(), filesCount, new Date(), false);
 
         BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(createdMail));
         mails.insert(obj1);
-
-
         out.append(gson.toJson(new State("ok")));
 
         //out.append(gson.toJson(new State(e.getMessage())));

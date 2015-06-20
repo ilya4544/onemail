@@ -51,6 +51,7 @@ public class GetEmailsServlet extends HttpServlet {
         String to = req.getParameter("email");
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
         Gson gson = new GsonBuilder().create();
         DBCollection emails = db.getCollection("mails");
