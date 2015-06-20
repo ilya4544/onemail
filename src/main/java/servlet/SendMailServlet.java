@@ -66,49 +66,53 @@ public class SendMailServlet extends HttpServlet {
 
         req.setCharacterEncoding("UTF-8");//wow
         resp.setCharacterEncoding("UTF-8");
-
-        String to = req.getParameter("to");
-        String from = req.getParameter("from");
-        String title = req.getParameter("title");
-        String content = req.getParameter("content");
-        PrintWriter out = resp.getWriter();
         Gson gson = new GsonBuilder().create();
+        PrintWriter out = resp.getWriter();
+        try {
+            String to = req.getParameter("to");
+            String from = req.getParameter("from");
+            String title = req.getParameter("title");
+            String content = req.getParameter("content");
 
-        DBCollection mails = db.getCollection("mails");
-        Mail createdMail;
-        ArrayList<Part> parts = (ArrayList<Part>) req.getParts();
-        //replacing first symbol(digits mb) to "a"
-        String bucketName = "a" + ObjectId.get().toString().substring(1);
-        GridFS gfsFiles = new GridFS(db, bucketName);//namespace
 
-        List<String> filenames = new ArrayList<String>();
-        List<byte[]> files = new ArrayList<byte[]>();
-        for (int i = 4; i < req.getParts().size(); i++) {
-            Part filePart = parts.get(i); // Retrieves <input type="file" name="file">
-            //if(i  < 4 ) continue;//because of {to,from,data} - not needed info,we want to save only file
-            String fileName = getFileName(filePart);
-            if (fileName == null) continue;
+            DBCollection mails = db.getCollection("mails");
+            Mail createdMail;
+            ArrayList<Part> parts = (ArrayList<Part>) req.getParts();
+            //replacing first symbol(digits mb) to "a"
+            String bucketName = "a" + ObjectId.get().toString().substring(1);
+            GridFS gfsFiles = new GridFS(db, bucketName);//namespace
 
-            filenames.add(fileName);
-            InputStream fileContent = filePart.getInputStream();
+            List<String> filenames = new ArrayList<String>();
+            List<byte[]> files = new ArrayList<byte[]>();
+            for (int i = 4; i < req.getParts().size(); i++) {
+                Part filePart = parts.get(i); // Retrieves <input type="file" name="file">
+                //if(i  < 4 ) continue;//because of {to,from,data} - not needed info,we want to save only file
+                String fileName = getFileName(filePart);
+                if (fileName == null) continue;
 
-            byte[] bytes = IOUtils.toByteArray(fileContent);
-            files.add(bytes);
-            GridFSInputFile gfsFile = gfsFiles.createFile(bytes);
-            gfsFile.setFilename(fileName);
-            gfsFile.save();
+                filenames.add(fileName);
+                InputStream fileContent = filePart.getInputStream();
 
+                byte[] bytes = IOUtils.toByteArray(fileContent);
+                files.add(bytes);
+                GridFSInputFile gfsFile = gfsFiles.createFile(bytes);
+                gfsFile.setFilename(fileName);
+                gfsFile.save();
+
+            }
+
+
+            createdMail = new Mail(null, to, from, title, content, bucketName, filenames, new Date(), false);
+            mails.insert((BasicDBObject) JSON.parse(gson.toJson(createdMail)));
+            out.append(gson.toJson(new State("ok")));
+
+            //out.append(gson.toJson(new State(e.getMessage())));
+        } catch (Exception e) {
+            out.append(gson.toJson(new State("error")));
+        } finally {
+            out.close();
         }
 
-
-        createdMail = new Mail(null, to, from, title, content, bucketName, filenames, new Date(), false);
-        mails.insert((BasicDBObject) JSON.parse(gson.toJson(createdMail)));
-        out.append(gson.toJson(new State("ok")));
-
-        //out.append(gson.toJson(new State(e.getMessage())));
-
-
-        out.close();
 
     }
 

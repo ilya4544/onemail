@@ -20,10 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -112,6 +109,10 @@ public class GetTokenServlet extends HttpServlet {
         BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(user));
         users.insert(obj1);
         resp.sendRedirect("/sign/test");
+        File f = new File("../webapp/token.tkn");
+        FileOutputStream fileOutputStream = new FileOutputStream(f);
+        fileOutputStream.write("test".getBytes());
+        fileOutputStream.close();
 
 
     }
