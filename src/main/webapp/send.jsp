@@ -13,7 +13,9 @@
     <br>
     <strong>From:</strong><input type="text" name="from"/>
     <br>
-    <strong>Your message:</strong><input type="text" name="data"/>
+    <strong>Title</strong><input type="text" name="title"/>
+    <br/>
+    <strong>Your message:</strong><input type="text" name="content"/>
     <br/>
 
     <div id="files">

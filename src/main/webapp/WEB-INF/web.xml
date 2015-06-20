@@ -19,6 +19,11 @@
         <servlet-class>servlet.SendMailServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>servlet.OpenEmailServlet</servlet-name>
+        <servlet-class>servlet.OpenEmailServlet</servlet-class>
+    </servlet>
+
 
 
     <servlet>
@@ -41,9 +46,14 @@
         <url-pattern>/sendMail</url-pattern>
     </servlet-mapping>
 
-
     <servlet-mapping>
         <servlet-name>servlet.DownloadServlet</servlet-name>
         <url-pattern>/download</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>servlet.OpenEmailServlet</servlet-name>
+        <url-pattern>/openEmail</url-pattern>
+    </servlet-mapping>
+
 </web-app>

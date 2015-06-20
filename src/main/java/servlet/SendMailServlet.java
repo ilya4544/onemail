@@ -24,6 +24,7 @@ import javax.servlet.http.Part;
 import java.io.*;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @WebServlet("/sendMail")
@@ -57,28 +58,35 @@ public class SendMailServlet extends HttpServlet {
 
         String to = req.getParameter("to");
         String from = req.getParameter("from");
-        String data = req.getParameter("data");
+        String title = req.getParameter("title");
+        String content = req.getParameter("content");
         PrintWriter out = resp.getWriter();
         Gson gson = new GsonBuilder().create();
 
         DBCollection mails = db.getCollection("mails");
-        DBCollection documents = db.getCollection("documents");
+        Mail createdMail;
+        ArrayList<Part> parts = (ArrayList<Part>) req.getParts();
 
         ObjectId id = ObjectId.get();
-
         GridFS gfsFiles = new GridFS(db, id.toString());//namespace
-        ArrayList<Part> parts = (ArrayList<Part>) req.getParts();
-        for (int i = 3; i < req.getParts().size(); i++) {
+
+        int filesCount = 0;
+        for (int i = 4; i < req.getParts().size(); i++) {
             Part filePart = parts.get(i); // Retrieves <input type="file" name="file">
-            //if(i  < 3 ) continue;//because of {to,from,data} - not needed info,we want to save only file
+            //if(i  < 4 ) continue;//because of {to,from,data} - not needed info,we want to save only file
             String fileName = getFileName(filePart);
+            if (fileName == null || fileName.isEmpty()) continue;
+
+
             InputStream fileContent = filePart.getInputStream();
             GridFSInputFile gfsFile = gfsFiles.createFile(fileContent);
             gfsFile.setFilename(fileName);
             gfsFile.save();
+            filesCount++;
 
         }
-        Mail createdMail = new Mail(to, from, data, id.toString(), req.getParts().size() - 3);
+        createdMail = new Mail(null,to, from, title, content, id.toString(), filesCount, new Date(), false);
+
         BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(createdMail));
         mails.insert(obj1);
 

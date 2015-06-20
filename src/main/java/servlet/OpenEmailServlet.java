@@ -1,14 +1,12 @@
 package servlet;
 
-/**
- * Created by freeemahn on 19.06.15.
- */
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
 import domain.Mail;
+import org.bson.BSONObject;
 import org.bson.types.ObjectId;
 
 import javax.servlet.ServletConfig;
@@ -17,13 +15,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class GetEmailsServlet extends HttpServlet {
+/**
+ * Created by freeemahn on 20.06.15.
+ */
+public class OpenEmailServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     MongoClient m = null;
@@ -46,30 +45,24 @@ public class GetEmailsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //super.doGet(req, resp);
-
-        String to = req.getParameter("email");
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
+        String id = req.getParameter("id");//id of email
         PrintWriter out = resp.getWriter();
         Gson gson = new GsonBuilder().create();
         DBCollection emails = db.getCollection("mails");
 
 
-        BasicDBObject queryEmail = new BasicDBObject("to", to);
-        DBCursor cursorEmail = emails.find(queryEmail);
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", new ObjectId(id));
+        //DBObject mail = emails.findOne(query);
+        //out.append(mail.toString());
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.append("$set", new BasicDBObject().replace("is_read", true));
 
-        List<Mail> mailList = new ArrayList<Mail>();
 
-        while (cursorEmail.hasNext()) {
-            DBObject cur = cursorEmail.next();
-            //cur.removeField("_id");
-            ObjectId t = (ObjectId) cur.removeField("_id");
-            cur.put("_id", t.toString());
-            mailList.add(gson.fromJson(cur.toString(), Mail.class));
-        }
 
-        out.append(gson.toJson(mailList));
+        emails.update(query, newDocument);
+
+
         out.close();
 
 
