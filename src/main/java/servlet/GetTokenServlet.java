@@ -56,6 +56,8 @@ public class GetTokenServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // super.doGet(req, resp);
         resp.setContentType("text/json");
+        resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
         out = resp.getWriter();
         String code = req.getParameter("code");
         String state = req.getParameter("state");

@@ -46,6 +46,9 @@ public class DownloadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
         OutputStream outStream = resp.getOutputStream();
         Gson gson = new GsonBuilder().create();
         String bucketName = req.getParameter("bucket");//_id of email

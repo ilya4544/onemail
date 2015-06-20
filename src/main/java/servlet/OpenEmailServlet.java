@@ -47,6 +47,8 @@ public class OpenEmailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
         String id = req.getParameter("id");//id of email
         String token = req.getParameter("token");//token
         Gson gson = new GsonBuilder().create();

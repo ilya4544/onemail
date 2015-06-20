@@ -57,6 +57,11 @@ public class GetEmailsServlet extends HttpServlet {
             out.close();
             return;
         }
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
+
         DBCollection emailsDB = db.getCollection("mails");
         DBCollection usersDB = db.getCollection("users");
         BasicDBObject queryEmail, queryUser;
@@ -65,9 +70,7 @@ public class GetEmailsServlet extends HttpServlet {
         queryUser = new BasicDBObject("id_token", token);
         String uid = gson.fromJson(usersDB.findOne(queryUser).toString(), User.class).getUid();
 
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        req.setCharacterEncoding("UTF-8");
+
 
 
         queryEmail = new BasicDBObject("to", uid);
