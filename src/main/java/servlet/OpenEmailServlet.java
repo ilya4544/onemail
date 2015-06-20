@@ -46,6 +46,7 @@ public class OpenEmailServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String id = req.getParameter("id");//id of email
         PrintWriter out = resp.getWriter();
         Gson gson = new GsonBuilder().create();

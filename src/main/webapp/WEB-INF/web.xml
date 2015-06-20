@@ -23,13 +23,21 @@
         <servlet-name>servlet.OpenEmailServlet</servlet-name>
         <servlet-class>servlet.OpenEmailServlet</servlet-class>
     </servlet>
-
-
+    <servlet>
+        <servlet-name>servlet.LoginServlet</servlet-name>
+        <servlet-class>servlet.LoginServlet</servlet-class>
+    </servlet>
 
     <servlet>
         <servlet-name>servlet.DownloadServlet</servlet-name>
         <servlet-class>servlet.DownloadServlet</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>servlet.GetTokenServlet</servlet-name>
+        <servlet-class>servlet.GetTokenServlet</servlet-class>
+    </servlet>
+
 
     <servlet-mapping>
         <servlet-name>servlet.GetUserInfoServlet</servlet-name>
@@ -56,4 +64,13 @@
         <url-pattern>/openEmail</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>servlet.LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>servlet.GetTokenServlet</servlet-name>
+        <url-pattern>/getToken</url-pattern>
+    </servlet-mapping>
 </web-app>
