@@ -8,7 +8,7 @@
 <body>
 <h1>Send an email</h1>
 
-<form action="http://95.85.46.247:8080/shipntrip/sendMail" method="post" enctype="multipart/form-data">
+<form action="sendMail" method="post" enctype="multipart/form-data">
     <strong>To:</strong><input type="text" name="to"/>
     <br>
     <strong>From:</strong><input type="text" name="from"/>
