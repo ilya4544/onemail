@@ -6,7 +6,7 @@ app.controller('TaskController', function($scope, $firebase, $http, FURL, $locat
 	var fbTasks = $firebase(ref.child('tasks')).$asArray();
 	var taskId = $routeParams.taskId;
 	var mails;
-	$http.get('getEmails?email=test').success(function (data) {
+	$http.get('getEmails?token=test').success(function (data) {
     	mails = data;
     	$scope.tasks = data;
     	var arrayLength = Object.keys($scope.tasks).length;

@@ -50,18 +50,19 @@ public class DownloadServlet extends HttpServlet {
         OutputStream outStream = resp.getOutputStream();
         String id = req.getParameter("id");//id of email
         int cur = Integer.parseInt(req.getParameter("current"));//attachment number
-        if (cur == 0) {
-            outStream.close();
-            return;
-        }
         GridFS gfsAttachments = new GridFS(db, id);//all of attachments
         DBCursor cursor = gfsAttachments.getFileList();
-        int i = 1;
+        outStream.write((cursor.count() + "\n").getBytes());
+        int i = 0;
 
         while (cursor.hasNext() && i < cur) {
+            //outStream.write(((cursor.curr().toString()) + "\n").getBytes());
             cursor.next();
             i++;
         }
+        //outStream.write(((cursor.curr() == null) + "\n").getBytes());
+        //  outStream.write(((cursor.curr().toString()) + "\n").getBytes());
+        // outStream.write(((cursor.curr().get("_id") == null) + "\n").getBytes());
         ObjectId objId = (ObjectId) (cursor.curr().get("_id"));
         GridFSDBFile f = gfsAttachments.findOne(objId);
         resp.setHeader("Content-Disposition", "attachment; filename=" + f.getFilename());

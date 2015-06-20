@@ -82,9 +82,11 @@ public class AccessToken {
     }
 
     public String getUsersIdentifier() {
-        Gson gson = new GsonBuilder().create();
+       /* Gson gson = new GsonBuilder().create();
         ID_Token idt = gson.fromJson(id_token, ID_Token.class);
-        return idt.message.sub;
+        return idt.message.sub;*/
+        return String.valueOf(id_token.hashCode());
+       // return "test";
     }
 
     class Header {

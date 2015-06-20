@@ -1,31 +1,16 @@
 package servlet;
 
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoException;
-import com.sun.deploy.net.HttpRequest;
-import com.sun.net.httpserver.HttpsParameters;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpParams;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by freeemahn on 20.06.15.
@@ -42,7 +27,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
 
-        String url = "https://esia-portal1.test.gosuslugi.ru/aas/oauth2/ac";
+        /*String url = "https://esia-portal1.test.gosuslugi.ru/aas/oauth2/ac";
 
         HttpGet get = new HttpGet(url);
         HttpClient client = new DefaultHttpClient();
@@ -77,6 +62,7 @@ public class LoginServlet extends HttpServlet {
             result.append(line);
         }
         System.out.println(result.toString());*/
+
     }
 
     @Override
