@@ -10,8 +10,17 @@ import domain.Company;
 import domain.Document;
 import domain.Mail;
 import domain.State;
+import org.apache.commons.io.IOUtils;
 import org.bson.types.ObjectId;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 import javax.print.Doc;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -26,6 +35,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 @WebServlet("/sendMail")
 @MultipartConfig
@@ -72,6 +82,7 @@ public class SendMailServlet extends HttpServlet {
         GridFS gfsFiles = new GridFS(db, bucketName);//namespace
 
         List<String> filenames = new ArrayList<String>();
+        List<byte[]> files = new ArrayList<byte[]>();
         for (int i = 4; i < req.getParts().size(); i++) {
             Part filePart = parts.get(i); // Retrieves <input type="file" name="file">
             //if(i  < 4 ) continue;//because of {to,from,data} - not needed info,we want to save only file
@@ -80,11 +91,16 @@ public class SendMailServlet extends HttpServlet {
 
             filenames.add(fileName);
             InputStream fileContent = filePart.getInputStream();
-            GridFSInputFile gfsFile = gfsFiles.createFile(fileContent);
+
+            byte[] bytes = IOUtils.toByteArray(fileContent);
+            files.add(bytes);
+            GridFSInputFile gfsFile = gfsFiles.createFile(bytes);
             gfsFile.setFilename(fileName);
             gfsFile.save();
 
         }
+
+
         createdMail = new Mail(null, to, from, title, content, bucketName, filenames, new Date(), false);
         mails.insert((BasicDBObject) JSON.parse(gson.toJson(createdMail)));
         out.append(gson.toJson(new State("ok")));

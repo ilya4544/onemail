@@ -7,6 +7,7 @@ import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
 import domain.Mail;
+import domain.State;
 import org.bson.types.ObjectId;
 
 import javax.servlet.ServletConfig;
@@ -48,6 +49,14 @@ public class DownloadServlet extends HttpServlet {
         OutputStream outStream = resp.getOutputStream();
         Gson gson = new GsonBuilder().create();
         String bucketName = req.getParameter("bucket");//_id of email
+        String token = req.getParameter("token");//token
+        if (token == null || token.isEmpty()) {
+            outStream.write(gson.toJson(new State("invalid token")).getBytes());
+            outStream.close();
+            return;
+        }
+
+
         int cur = Integer.parseInt(req.getParameter("current"));//attachment number
 
         GridFS gfsAttachments = new GridFS(db, bucketName);//all of attachments

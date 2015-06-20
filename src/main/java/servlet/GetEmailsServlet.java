@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;
 import domain.Mail;
+import domain.State;
 import domain.User;
 import org.bson.types.ObjectId;
 
@@ -38,11 +39,9 @@ public class GetEmailsServlet extends HttpServlet {
             System.out.println("Connected");
             gson = new GsonBuilder().create();
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
 
         } catch (MongoException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -50,20 +49,25 @@ public class GetEmailsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id_token = req.getParameter("token");//id_token
+        String token = req.getParameter("token");//id_token
+        PrintWriter out = resp.getWriter();
+
+        if (token == null || token.isEmpty()) {
+            out.append(gson.toJson(new State("invalid token")));
+            out.close();
+            return;
+        }
         DBCollection emailsDB = db.getCollection("mails");
         DBCollection usersDB = db.getCollection("users");
         BasicDBObject queryEmail, queryUser;
 
         //TODO validation
-        //TODO find users with this token => uid
-        queryUser = new BasicDBObject("id_token", id_token);
+        queryUser = new BasicDBObject("id_token", token);
         String uid = gson.fromJson(usersDB.findOne(queryUser).toString(), User.class).getUid();
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         req.setCharacterEncoding("UTF-8");
-        PrintWriter out = resp.getWriter();
 
 
         queryEmail = new BasicDBObject("to", uid);

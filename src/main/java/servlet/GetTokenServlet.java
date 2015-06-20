@@ -50,7 +50,7 @@ public class GetTokenServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       // super.doGet(req, resp);
+        // super.doGet(req, resp);
         String code = req.getParameter("code");
         String state = req.getParameter("state");
         String url = "https://esia-portal1.test.gosuslugi.ru/aas/oauth2/te";
@@ -93,9 +93,10 @@ public class GetTokenServlet extends HttpServlet {
         DBCollection users = db.getCollection("users");
         //AccessToken token = gson.fromJson(result.toString(), AccessToken.class);
         AccessToken token = new AccessToken("test", "bbbbbb", "never", "STATE_NY", "Bearer", "000000");
-        User user = new User(token.getUsersIdentifier(), token, token.getId_token(), "VASYA");//wow
+        User user = new User(token.getUsersIdentifier(), token, token.getId_token(), "VASYA", "gordon.pav@gmail.com");//wow
         BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(user));
         users.insert(obj1);
+
 
 
     }

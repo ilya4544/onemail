@@ -48,11 +48,17 @@ public class OpenEmailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String id = req.getParameter("id");//id of email
-        PrintWriter out = resp.getWriter();
+        String token = req.getParameter("token");//token
         Gson gson = new GsonBuilder().create();
+        PrintWriter out = resp.getWriter();
+        if (token == null || token.isEmpty()) {
+            out.append(gson.toJson(new State("invalid token")));
+            out.close();
+            return;
+        }
+
+
         DBCollection emails = db.getCollection("mails");
-
-
         BasicDBObject query = new BasicDBObject();
         try {
             query.put("_id", new ObjectId(id));

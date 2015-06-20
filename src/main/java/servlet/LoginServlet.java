@@ -1,16 +1,14 @@
 package servlet;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpParams;
-
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.security.cert.Certificate;
 
 /**
  * Created by freeemahn on 20.06.15.
@@ -22,10 +20,20 @@ import java.io.IOException;
  */
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    PrintWriter out;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        out = resp.getWriter();
+        // super.doGet(req, resp);
+        String https_url = "https://esia-portal1.test.gosuslugi.ru/aas/oauth2/ac";
+
+        URL url = new URL(https_url);
+        HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+        print_https_cert(con);
+
+        //dump all the content
+        print_content(con);
 
         /*String url = "https://esia-portal1.test.gosuslugi.ru/aas/oauth2/ac";
 
@@ -34,7 +42,7 @@ public class LoginServlet extends HttpServlet {
         HttpParams params = get.getParams();
         params.setParameter("client_id", "C02G8416DRJM");
         params.setParameter("client_secret", "");
-        params.setParameter("redirect_uri", "/getAccessToken");
+        params.setParameter("redirect_uri", "/get;
         params.setParameter("scope", "openid");
         params.setParameter("responce_type", "");
         params.setParameter("state", "");
@@ -63,6 +71,7 @@ public class LoginServlet extends HttpServlet {
         }
         System.out.println(result.toString());*/
 
+
     }
 
     @Override
@@ -71,5 +80,63 @@ public class LoginServlet extends HttpServlet {
 
 
     }
+
+    private void print_https_cert(HttpsURLConnection con) {
+
+        if (con != null) {
+
+            try {
+
+                out.println("Response Code : " + con.getResponseCode());
+                out.println("Cipher Suite : " + con.getCipherSuite());
+                out.println("\n");
+
+                Certificate[] certs = con.getServerCertificates();
+                for (Certificate cert : certs) {
+                    out.println("Cert Type : " + cert.getType());
+                    out.println("Cert Hash Code : " + cert.hashCode());
+                    out.println("Cert Public Key Algorithm : "
+                            + cert.getPublicKey().getAlgorithm());
+                    out.println("Cert Public Key Format : "
+                            + cert.getPublicKey().getFormat());
+                    out.println("\n");
+                }
+
+            } catch (SSLPeerUnverifiedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    private void print_content(HttpsURLConnection con) {
+        if (con != null) {
+
+            try {
+
+                out.println("****** Content of the URL ********");
+                BufferedReader br =
+                        new BufferedReader(
+                                new InputStreamReader(con.getInputStream()));
+
+                String input;
+
+                while ((input = br.readLine()) != null) {
+                    out.println(input);
+                }
+                br.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+
 }
 
