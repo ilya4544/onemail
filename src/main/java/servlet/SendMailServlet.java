@@ -67,17 +67,16 @@ public class SendMailServlet extends HttpServlet {
         DBCollection mails = db.getCollection("mails");
         Mail createdMail;
         ArrayList<Part> parts = (ArrayList<Part>) req.getParts();
-
-        ObjectId id = ObjectId.get();
-        String bucket = "a" + id.toString();
-        GridFS gfsFiles = new GridFS(db, bucket);//namespace
+        //replacing first symbol(digits mb) to "a"
+        String bucketName = "a" + ObjectId.get().toString().substring(1);
+        GridFS gfsFiles = new GridFS(db, bucketName);//namespace
 
         int filesCount = 0;
         for (int i = 4; i < req.getParts().size(); i++) {
             Part filePart = parts.get(i); // Retrieves <input type="file" name="file">
             //if(i  < 4 ) continue;//because of {to,from,data} - not needed info,we want to save only file
             String fileName = getFileName(filePart);
-            //if (fileName == null) continue;
+            if (fileName == null) continue;
 
 
             InputStream fileContent = filePart.getInputStream();
@@ -87,10 +86,8 @@ public class SendMailServlet extends HttpServlet {
             filesCount++;
 
         }
-        createdMail = new Mail(null, to, from, title, content, bucket, filesCount, new Date(), false);
-
-        BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(createdMail));
-        mails.insert(obj1);
+        createdMail = new Mail(null, to, from, title, content, bucketName, filesCount, new Date(), false);
+        mails.insert((BasicDBObject) JSON.parse(gson.toJson(createdMail)));
         out.append(gson.toJson(new State("ok")));
 
         //out.append(gson.toJson(new State(e.getMessage())));

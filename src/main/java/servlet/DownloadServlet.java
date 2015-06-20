@@ -36,11 +36,9 @@ public class DownloadServlet extends HttpServlet {
             db = m.getDB("test");
             System.out.println("Connected");
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
 
         } catch (MongoException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -48,21 +46,20 @@ public class DownloadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         OutputStream outStream = resp.getOutputStream();
-        String id = req.getParameter("id");//id of email
+        Gson gson = new GsonBuilder().create();
+        String bucketName = req.getParameter("bucket");//_id of email
         int cur = Integer.parseInt(req.getParameter("current"));//attachment number
-        GridFS gfsAttachments = new GridFS(db, id);//all of attachments
+
+        GridFS gfsAttachments = new GridFS(db, bucketName);//all of attachments
         DBCursor cursor = gfsAttachments.getFileList();
         outStream.write((cursor.count() + "\n").getBytes());
         int i = 0;
 
         while (cursor.hasNext() && i < cur) {
-            //outStream.write(((cursor.curr().toString()) + "\n").getBytes());
             cursor.next();
             i++;
         }
-        //outStream.write(((cursor.curr() == null) + "\n").getBytes());
-        //  outStream.write(((cursor.curr().toString()) + "\n").getBytes());
-        // outStream.write(((cursor.curr().get("_id") == null) + "\n").getBytes());
+
         ObjectId objId = (ObjectId) (cursor.curr().get("_id"));
         GridFSDBFile f = gfsAttachments.findOne(objId);
         resp.setHeader("Content-Disposition", "attachment; filename=" + f.getFilename());
