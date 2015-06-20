@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ public class GetTokenServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     MongoClient m = null;
     DB db;
+    PrintWriter out;
 
     public void init(ServletConfig config) {
         try {
@@ -51,52 +55,61 @@ public class GetTokenServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // super.doGet(req, resp);
+        resp.setContentType("text/json");
+        out = resp.getWriter();
         String code = req.getParameter("code");
         String state = req.getParameter("state");
-        String url = "https://esia-portal1.test.gosuslugi.ru/aas/oauth2/te";
+        String https_url = "https://esia-portal1.test.gosuslugi.ru/aas/oauth2/te";
 
 
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(url);
+        String client_id = "C02G8416DRJM";
+        String grant_type = "";
+        String client_secret = "";
+        String redirect_uri = "/browse";
+        String scope = "openid";
+        String timestamp = "";
+        String token_type = "";
+
+        String query = "";
+        query += "client_id=" + client_id;
+        query += "&code=" + code;
+        query += "&grant_type=" + grant_type;
+        query += "&client_secret=" + client_secret;
+        query += "&state=" + state;
+        query += "&redirect_uri=" + redirect_uri;
+        query += "&scope=" + scope;
+        query += "&timestamp=" + timestamp;
+        query += "&token_type=" + token_type;
 
 
-        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        urlParameters.add(new BasicNameValuePair("client_id", ""));
-        urlParameters.add(new BasicNameValuePair("code", code));
-        urlParameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
-        urlParameters.add(new BasicNameValuePair("client_secret", ""));
-        urlParameters.add(new BasicNameValuePair("state", state));
-        urlParameters.add(new BasicNameValuePair("redirect_uri", "/"));
-        urlParameters.add(new BasicNameValuePair("scope", ""));
-        urlParameters.add(new BasicNameValuePair("timestamp", ""));
-        urlParameters.add(new BasicNameValuePair("token_type", "Bearer"));
+        URL url = new URL(https_url);
+        HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-length", String.valueOf(query.length()));
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        con.setDoOutput(true);
+        con.setDoInput(true);
 
-        post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
-      /*  HttpResponse response = client.execute(post);
-        System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post parameters : " + post.getEntity());
-        System.out.println("Response Code : " +
-                response.getStatusLine().getStatusCode());
+        // out.println("****** Content of the URL ********");
+        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
-        BufferedReader rd = new BufferedReader(
-                new InputStreamReader(response.getEntity().getContent()));
+        String result;
 
-        StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }*/
+        while ((result = br.readLine()) != null) {
+            out.println(result);
+        }
+        br.close();
 
 
         Gson gson = new GsonBuilder().create();
         DBCollection users = db.getCollection("users");
-        //AccessToken token = gson.fromJson(result.toString(), AccessToken.class);
+        //AccessToken token = gson.fromJson(result, AccessToken.class);
         AccessToken token = new AccessToken("test", "bbbbbb", "never", "STATE_NY", "Bearer", "000000");
         User user = new User(token.getUsersIdentifier(), token, token.getId_token(), "VASYA", "gordon.pav@gmail.com");//wow
         BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(user));
         users.insert(obj1);
-
+        resp.sendRedirect("/browse/test");
 
 
     }
@@ -106,4 +119,6 @@ public class GetTokenServlet extends HttpServlet {
         super.doPost(req, resp);
 
     }
+
+
 }

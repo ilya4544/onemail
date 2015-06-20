@@ -1,5 +1,7 @@
 package servlet;
 
+import org.apache.http.params.HttpParams;
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.servlet.ServletException;
@@ -25,12 +27,39 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         out = resp.getWriter();
+        resp.setContentType("text/html");
         // super.doGet(req, resp);
-        String https_url = "https://esia-portal1.test.gosuslugi.ru/aas/oauth2/ac";
+        String https_url = "https://esia-portal1.test.gosuslugi.ru/aas/oauth2/ac?";
 
+
+        String client_id = "C02G8416DRJM";
+        String client_secret = "";
+        String redirect_uri = "/browse";
+        String scope = "openid";
+        String responce_type = "code";
+        String state = "";
+        String timestamp = "";
+        String access_type = "online";
+        https_url += "client_id=" + client_id;
+//        params.setParameter("client_id", "C02G8416DRJM");
+        https_url += "&client_secret=" + client_secret;
+//        params.setParameter("client_secret", "");
+        https_url += "&redirect_uri=" + redirect_uri;
+//        params.setParameter("redirect_uri", "/get");
+        https_url += "&scope=" + scope;
+//        params.setParameter("scope", "openid");        ;
+        https_url += "&responce_type=" + responce_type;
+//        params.setParameter("responce_type", "");
+        https_url += "&state=" + state;
+//        params.setParameter("state", "");
+        https_url += "&timestamp=" + timestamp;
+//        params.setParameter("timestamp", "12345");
+        https_url += "&access_type=" + access_type;
+//        params.setParameter("access_type", "12345");
         URL url = new URL(https_url);
+
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-        print_https_cert(con);
+        //print_https_cert(con);
 
         //dump all the content
         print_content(con);
@@ -117,7 +146,7 @@ public class LoginServlet extends HttpServlet {
 
             try {
 
-                out.println("****** Content of the URL ********");
+               // out.println("****** Content of the URL ********");
                 BufferedReader br =
                         new BufferedReader(
                                 new InputStreamReader(con.getInputStream()));
