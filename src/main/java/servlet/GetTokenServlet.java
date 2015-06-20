@@ -89,7 +89,7 @@ public class GetTokenServlet extends HttpServlet {
         con.setDoOutput(true);
         con.setDoInput(true);
 
-
+/*
         // out.println("****** Content of the URL ********");
         BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
@@ -98,7 +98,7 @@ public class GetTokenServlet extends HttpServlet {
         while ((result = br.readLine()) != null) {
             out.println(result);
         }
-        br.close();
+        br.close();*/
 
 
         Gson gson = new GsonBuilder().create();
@@ -109,7 +109,7 @@ public class GetTokenServlet extends HttpServlet {
         BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(user));
         users.insert(obj1);
         resp.sendRedirect("/sign/test");
-        File f = new File("../webapp/token.tkn");
+        File f = new File("token.tkn");
         FileOutputStream fileOutputStream = new FileOutputStream(f);
         fileOutputStream.write("test".getBytes());
         fileOutputStream.close();

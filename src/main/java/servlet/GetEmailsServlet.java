@@ -50,6 +50,8 @@ public class GetEmailsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = req.getParameter("token");//id_token
+        resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
 
         if (token == null || token.isEmpty()) {
@@ -58,9 +60,7 @@ public class GetEmailsServlet extends HttpServlet {
             return;
         }
 
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        req.setCharacterEncoding("UTF-8");
+
 
         DBCollection emailsDB = db.getCollection("mails");
         DBCollection usersDB = db.getCollection("users");
