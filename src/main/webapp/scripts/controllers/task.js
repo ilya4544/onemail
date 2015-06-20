@@ -5,6 +5,7 @@ app.controller('TaskController', function($scope, $firebase, $http, FURL, $locat
 	var ref = new Firebase(FURL);
 	var fbTasks = $firebase(ref.child('tasks')).$asArray();
 	var taskId = $routeParams.taskId;
+	var token = $routeParams.token;
 	var mails;
 	$http.get('getEmails?token=test').success(function (data) {
     	mails = data;
@@ -48,6 +49,19 @@ app.controller('TaskController', function($scope, $firebase, $http, FURL, $locat
 		toaster.pop('success', 'Task created successfully.');
 		$location.path('/');
 	};	
+
+	$scope.login = function() {
+		$http.get('login').success(function (data) {
+    		console.log("Yeah");	
+		});
+	};
+
+	$scope.updateProfile = function(email) {
+		//$scope.selectedTask.$save(task);
+		console.log(email);
+		toaster.pop('success', "Настройки успешно применены.");
+		$location.path('/browse');
+	};
 
 	$scope.updateTask = function(task) {
 		$scope.selectedTask.$save(task);

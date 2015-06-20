@@ -12,9 +12,14 @@ var app = angular
   .config(function ($routeProvider) {
     $routeProvider      
       .when('/', {
-        templateUrl: 'views/main.html'
+        templateUrl: 'views/main.html',
+        controller: 'TaskController'
       })
       .when('/browse', {
+        templateUrl: 'views/browse.html',
+        controller: 'TaskController'     
+      })
+      .when('/browse/:token', {
         templateUrl: 'views/browse.html',
         controller: 'TaskController'     
       })
@@ -24,6 +29,10 @@ var app = angular
       })
       .when('/post', {
         templateUrl: 'views/post.html',
+        controller: 'TaskController'
+      })
+      .when('/settings', {
+        templateUrl: 'views/settings.html',
         controller: 'TaskController'
       })
       .when('/edit/:taskId', {

@@ -1,14 +1,21 @@
 <div class="container">
 	<div class="row title">
 		<div class="col-md-6 col-md-offset-3">
-				      		
-			<h1>{{selectedTask.title}}</h1>
+			<div class="panel panel-default">
+	  			<!-- Default panel contents -->
+	  			<div class="panel-heading"><h2>{{selectedTask.title}}</h2></div>
+	  			<div class="panel-body">
+	    			<p>{{selectedTask.content}}</p>
+	  			</div>
+			</div>	      		
 			
-			<p>{{selectedTask.content}}</p>
-
-			<a ng-repeat="filename in selectedTask.fileNames track by $index" 
-			  ng-href='download?bucket={{selectedTask.files}}&current={{$index+1}}' align="left">
-					<div align="left"><span class="glyphicon glyphicon-download-alt gi-2x"></span><p>hghghg{{filename}}</p></div>
+			<a ng-repeat="filename in selectedTask.filenames"
+			  ng-href='download?bucket={{selectedTask.files}}&current={{$index+1}}' align="left" style="text-decoration:none">
+					<div class="panel panel-default">
+  							<div class="panel-body">
+    						<span class="glyphicon glyphicon-download-alt"></span>  {{filename}}
+  							</div>
+					</div>
 			</a>
 		</div>
 	</div>	
