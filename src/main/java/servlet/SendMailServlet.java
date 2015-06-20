@@ -71,22 +71,21 @@ public class SendMailServlet extends HttpServlet {
         String bucketName = "a" + ObjectId.get().toString().substring(1);
         GridFS gfsFiles = new GridFS(db, bucketName);//namespace
 
-        int filesCount = 0;
+        List<String> filenames = new ArrayList<String>();
         for (int i = 4; i < req.getParts().size(); i++) {
             Part filePart = parts.get(i); // Retrieves <input type="file" name="file">
             //if(i  < 4 ) continue;//because of {to,from,data} - not needed info,we want to save only file
             String fileName = getFileName(filePart);
             if (fileName == null) continue;
 
-
+            filenames.add(fileName);
             InputStream fileContent = filePart.getInputStream();
             GridFSInputFile gfsFile = gfsFiles.createFile(fileContent);
             gfsFile.setFilename(fileName);
             gfsFile.save();
-            filesCount++;
 
         }
-        createdMail = new Mail(null, to, from, title, content, bucketName, filesCount, new Date(), false);
+        createdMail = new Mail(null, to, from, title, content, bucketName, filenames, new Date(), false);
         mails.insert((BasicDBObject) JSON.parse(gson.toJson(createdMail)));
         out.append(gson.toJson(new State("ok")));
 

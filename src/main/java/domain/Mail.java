@@ -3,6 +3,7 @@ package domain;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Ilya on 19.06.2015.
@@ -14,7 +15,7 @@ public class Mail {
     private String title;
     private String content;
     private String files;
-    private Integer count;
+    private List<String> filenames;
     private Date date;
     private Boolean is_read;
 
@@ -42,14 +43,14 @@ public class Mail {
         this.is_read = is_read;
     }
 
-    public Mail(String _id, String to, String from, String title, String content, String files, Integer count, Date date, Boolean is_read) {
+    public Mail(String _id, String to, String from, String title, String content, String files, List<String> filenames, Date date, Boolean is_read) {
         this._id = _id;
         this.to = to;
         this.from = from;
         this.title = title;
         this.content = content;
         this.files = files;
-        this.count = count;
+        this.filenames = filenames;
         this.date = date;
         this.is_read = is_read;
 
@@ -64,12 +65,12 @@ public class Mail {
         this.title = title;
     }
 
-    public Integer getCount() {
-        return count;
+    public List<String> getFilenames() {
+        return filenames;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setFilenames(Integer count) {
+        this.filenames = filenames;
     }
 
     public String getTo() {
