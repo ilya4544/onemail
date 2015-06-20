@@ -1,5 +1,9 @@
 package domain;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mongodb.util.JSON;
+
 /**
  * Created by freeemahn on 19.06.15.
  */
@@ -75,5 +79,31 @@ public class AccessToken {
 
     public void setId_token(String id_token) {
         this.id_token = id_token;
+    }
+
+    public String getUsersIdentifier() {
+        Gson gson = new GsonBuilder().create();
+        ID_Token idt = gson.fromJson(id_token, ID_Token.class);
+        return idt.message.sub;
+    }
+
+    class Header {
+        //OtherStuff
+    }
+
+    class Message {
+        String sub;
+        String exp;
+        //OtherStuff
+    }
+
+    class Signature {
+        //OtherStuff
+    }
+
+    class ID_Token {
+        Header header;
+        Message message;
+        Signature signature;
     }
 }

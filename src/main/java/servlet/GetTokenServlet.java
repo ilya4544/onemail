@@ -8,6 +8,7 @@ import com.sun.deploy.net.HttpRequest;
 import com.sun.net.httpserver.HttpsParameters;
 import domain.AccessToken;
 import domain.Mail;
+import domain.User;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -45,11 +46,8 @@ public class GetTokenServlet extends HttpServlet {
             db = m.getDB("test");
             System.out.println("Connected");
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-
         } catch (MongoException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -96,10 +94,11 @@ public class GetTokenServlet extends HttpServlet {
         }
 
         Gson gson = new GsonBuilder().create();
-        DBCollection tokens = db.getCollection("tokens");
+        DBCollection users = db.getCollection("users");
         AccessToken token = gson.fromJson(result.toString(), AccessToken.class);
-        BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(token));
-        tokens.insert(obj1);
+        User user = new User(token.getUsersIdentifier(), token, token.getId_token(), "VASYA");//wow
+        BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(user));
+        users.insert(obj1);
 
 
     }

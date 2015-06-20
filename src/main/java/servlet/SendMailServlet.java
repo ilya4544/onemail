@@ -40,10 +40,8 @@ public class SendMailServlet extends HttpServlet {
             db = m.getDB("test");
             System.out.println("Connected");
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (MongoException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

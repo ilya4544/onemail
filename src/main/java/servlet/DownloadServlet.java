@@ -47,9 +47,13 @@ public class DownloadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //super.doGet(req, resp);
+        OutputStream outStream = resp.getOutputStream();
         String id = req.getParameter("id");//id of email
         int cur = Integer.parseInt(req.getParameter("current"));//attachment number
+        if (cur == 0) {
+            outStream.close();
+            return;
+        }
         GridFS gfsAttachments = new GridFS(db, id);//all of attachments
         DBCursor cursor = gfsAttachments.getFileList();
         int i = 1;
@@ -61,7 +65,7 @@ public class DownloadServlet extends HttpServlet {
         ObjectId objId = (ObjectId) (cursor.curr().get("_id"));
         GridFSDBFile f = gfsAttachments.findOne(objId);
         resp.setHeader("Content-Disposition", "attachment; filename=" + f.getFilename());
-        OutputStream outStream = resp.getOutputStream();
+
         f.writeTo(outStream);
         outStream.close();
 

@@ -4,32 +4,26 @@ package domain;
  * Created by Ilya on 20.03.2015.
  */
 public class User {
-    private String email;
-    private String pass;
+    private String uid;
+    private String id_token;
+    private AccessToken a_token;
     private String name;
 
 
-    public User(String email,String pass, String name) {
-        this.email = email;
-        this.pass = pass;
+    public User(String uid, AccessToken a_token, String id_token, String name) {
+        this.uid = uid;
+        this.id_token = id_token;
+        this.a_token = a_token;
         this.name = name;
 
     }
 
-    public String getEmail() {
-        return email;
+    public String getUid() {
+        return uid;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {
@@ -38,5 +32,22 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public String getId_token() {
+        return id_token;
+    }
+
+    public void setId_token(String id_token) {
+        this.id_token = id_token;
+    }
+
+    public AccessToken getA_token() {
+        return a_token;
+    }
+
+    public void setA_token(AccessToken a_token) {
+        this.a_token = a_token;
     }
 }
