@@ -52,7 +52,7 @@ public class DownloadServlet extends HttpServlet {
         int cur = Integer.parseInt(req.getParameter("current"));//attachment number
         GridFS gfsAttachments = new GridFS(db, id);//all of attachments
         DBCursor cursor = gfsAttachments.getFileList();
-        int i = 0;
+        int i = 1;
 
         while (cursor.hasNext() && i < cur) {
             cursor.next();

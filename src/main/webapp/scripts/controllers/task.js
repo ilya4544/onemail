@@ -8,7 +8,12 @@ app.controller('TaskController', function($scope, $firebase, $http, FURL, $locat
 	var mails;
 	$http.get('getEmails?email=test').success(function (data) {
     	mails = data;
-    	$scope.tasks = data; // response data 
+    	$scope.tasks = data;
+    	var arrayLength = Object.keys($scope.tasks).length;
+		for (var i = 0; i < arrayLength; i++) {
+			var d = new Date($scope.tasks[i].date);
+    		$scope.tasks[i].date = d.getTime();
+		}
     	if(taskId) {
 			$scope.selectedTask = getTask(taskId, $scope.tasks);
 		}	
@@ -27,6 +32,10 @@ app.controller('TaskController', function($scope, $firebase, $http, FURL, $locat
 		}
 		return null;
 	};
+
+	$scope.getNumber = function(num) {
+    	return new Array(num);   
+	}
 
 	$scope.openMail = function(_id) {
 		$http.get('openEmail?id='+_id).success(function (data) {

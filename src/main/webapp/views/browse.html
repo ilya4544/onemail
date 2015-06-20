@@ -9,22 +9,22 @@
 							<div class="input-group-addon">
 								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 							</div>
-				      		<input type="text" ng-model="searchTask" class="form-control" placeholder="Search">
+				      		<input type="text" ng-model="searchTask" class="form-control" placeholder="Поиск">
 				    	</div>	
 					</div>		
 					
 					<!-- TASK LIST -->	
-					<a ng-repeat="task in tasks | filter: searchTask | orderBy: 'title'" ng-href="#/mail/{{task._id}}" 
+					<a ng-repeat="task in tasks | filter: searchTask | orderBy: '-date'" ng-href="#/mail/{{task._id}}" 
 					   ng-click="openMail(task._id)">
 						<div class="list-group-item">					        
 					        <div class="row-content">
-					            <h4 class="list-group-item-heading">{{task.title | limitTo:25}}{{ task.title.length > 25? "..." : ""}}</h4>
+					            <h4 class="list-group-item-heading" style="{{task.is_read == true ? 'color:grey' : ''}}">{{task.title | limitTo:25}}{{ task.title.length > 25? "..." : ""}}</h4>
 					            <span class="list-group-item-text">
 					            	{{task.content}}
 					            </span>		            
 					        </div>
 					        <div class="payment">
-					        	<h4 class="list-group-item-heading">{{task.date}}</h4>
+					        	<h4 class="list-group-item-heading">{{task.date | date:"dd.MM"}}</h4>
 					        	<h4 class="list-group-item-heading">
 					            	{{task.from}}
 					            </h4>
