@@ -88,7 +88,7 @@ public class SendMailServlet extends HttpServlet {
                 Part filePart = parts.get(i); // Retrieves <input type="file" name="file">
                 //if(i  < 4 ) continue;//because of {to,from,data} - not needed info,we want to save only file
                 String fileName = getFileName(filePart);
-                if (fileName == null) continue;
+                if (fileName == null || fileName.isEmpty()) continue;
 
                 filenames.add(fileName);
                 InputStream fileContent = filePart.getInputStream();
@@ -105,7 +105,7 @@ public class SendMailServlet extends HttpServlet {
             createdMail = new Mail(null, to, from, title, content, bucketName, filenames, new Date(), false);
             mails.insert((BasicDBObject) JSON.parse(gson.toJson(createdMail)));
             out.append(gson.toJson(new State("ok")));
-
+            resp.sendRedirect("#/browse");
             //out.append(gson.toJson(new State(e.getMessage())));
         } catch (Exception e) {
             out.append(gson.toJson(new State("error")));

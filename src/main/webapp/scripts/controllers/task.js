@@ -1,12 +1,13 @@
 'use strict';
 
-app.controller('TaskController', function($scope, $firebase, $http, FURL, $location, $routeParams, toaster) {
+app.controller('TaskController', function($scope, $firebase, $http, FURL, $location, $routeParams, toaster, $timeout) {
 
 	var ref = new Firebase(FURL);
 	var fbTasks = $firebase(ref.child('tasks')).$asArray();
 	var taskId = $routeParams.taskId;
 	var token = $routeParams.token;
 	var mails;
+   // $scope.signedIn = false;
 	$http.get('getEmails?token=test').success(function (data) {
     	mails = data;
     	$scope.tasks = data;
@@ -15,15 +16,14 @@ app.controller('TaskController', function($scope, $firebase, $http, FURL, $locat
 			var d = new Date($scope.tasks[i].date);
     		$scope.tasks[i].date = d.getTime();
 		}
+    	$scope.signedIn = true;
     	if(taskId) {
 			$scope.selectedTask = getTask(taskId, $scope.tasks);
-		}	
+		}
 	}).error(function (data) {
 		console.log(data);
     	console.log("BLOG failed");
 	});
-	
-
 
 	function getTask(taskId, mails) {
 		var arrayLength = Object.keys(mails).length;
@@ -39,10 +39,17 @@ app.controller('TaskController', function($scope, $firebase, $http, FURL, $locat
 	}
 
 	$scope.openMail = function(_id) {
-		$http.get('openEmail?id='+_id).success(function (data) {
+		$http.get('openEmail?id='+_id+"&token=test").success(function (data) {
     		console.log("Yeah");	
 		});
 	};
+
+	$scope.deleteMail = function(_id) {
+		$http.get('delete?id='+_id+"&token=test").success(function (data) {
+    		toaster.pop('success', 'Письмо успешно удалено.');
+			$location.path('browse');	
+		});	
+	}
 
 	$scope.postTask = function(task) {
 		$scope.tasks.$add(task);
@@ -55,6 +62,8 @@ app.controller('TaskController', function($scope, $firebase, $http, FURL, $locat
     		console.log("Yeah");	
 		});
 	};
+
+	
 
 	$scope.updateProfile = function(email) {
 		//$scope.selectedTask.$save(task);

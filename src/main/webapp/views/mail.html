@@ -3,14 +3,18 @@
 		<div class="col-md-6 col-md-offset-3">
 			<div class="panel panel-default">
 	  			<!-- Default panel contents -->
-	  			<div class="panel-heading"><h2>{{selectedTask.title}}</h2></div>
+                <div class="panel-body" align="right">
+                <button type="submit" class="btn btn-danger" ng-click="deleteMail(selectedTask._id)">
+                    <span class="glyphicon glyphicon-left-arrow"></span> Удалить</button>
+                </div>
+                <div class="panel-heading"><h2>{{selectedTask.title}}</h2></div>
 	  			<div class="panel-body">
 	    			<p>{{selectedTask.content}}</p>
 	  			</div>
 			</div>	      		
 			
 			<a ng-repeat="filename in selectedTask.filenames"
-			  ng-href='download?bucket={{selectedTask.files}}&current={{$index+1}}' align="left" style="text-decoration:none">
+			  ng-href='download?bucket={{selectedTask.files}}&current={{$index+1}}&token=test' align="left" style="text-decoration:none">
 					<div class="panel panel-default">
   							<div class="panel-body">
     						<span class="glyphicon glyphicon-download-alt"></span>  {{filename}}

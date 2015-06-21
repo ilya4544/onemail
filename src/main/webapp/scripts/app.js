@@ -19,8 +19,8 @@ var app = angular
         templateUrl: 'views/browse.html',
         controller: 'TaskController'     
       })
-      .when('/browse/:token', {
-        templateUrl: 'views/browse.html',
+      .when('/sign/:token', {
+        templateUrl: 'views/edit.html',
         controller: 'TaskController'     
       })
       .when('/mail/:taskId', {
