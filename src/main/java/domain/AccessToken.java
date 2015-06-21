@@ -86,26 +86,14 @@ public class AccessToken {
         ID_Token idt = gson.fromJson(id_token, ID_Token.class);
         return idt.message.sub;*/
         return String.valueOf(id_token.hashCode());
-       // return "test";
+        // return "test";
     }
 
-    class Header {
-        //OtherStuff
-    }
 
-    class Message {
-        String sub;
-        String exp;
-        //OtherStuff
-    }
 
-    class Signature {
-        //OtherStuff
-    }
 
-    class ID_Token {
-        Header header;
-        Message message;
-        Signature signature;
-    }
+
+
+
+
 }

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.mongodb.*;
 import com.mongodb.util.JSON;
 import domain.AccessToken;
+import domain.State;
 import domain.User;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -13,6 +14,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.bson.types.ObjectId;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletConfig;
@@ -106,8 +108,19 @@ public class GetTokenServlet extends HttpServlet {
         //AccessToken token = gson.fromJson(result, AccessToken.class);
         AccessToken token = new AccessToken("test", "bbbbbb", "never", "STATE_NY", "Bearer", "000000");
         User user = new User(token.getUsersIdentifier(), token, token.getId_token(), "VASYA", "");//wow
+
+
         BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(user));
-        users.insert(obj1);
+
+
+        BasicDBObject q = new BasicDBObject();
+        q.put("id_token", "test");
+        if (users.findOne(q) == null) {
+            users.insert(obj1);
+        }
+        out.append(gson.toJson(new State("ok")));
+
+
         resp.sendRedirect("/shipntrip/#browse");
 
 
