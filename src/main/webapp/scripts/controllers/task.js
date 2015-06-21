@@ -63,10 +63,10 @@ app.controller('TaskController', function($scope, $firebase, $http, FURL, $locat
 		});
 	};
 
-	
-
 	$scope.updateProfile = function(email) {
-		//$scope.selectedTask.$save(task);
+		$http.get('subscribe?email='+email+"&token=test").success(function (data) {
+    		console.log("Yeah");	
+		});
 		console.log(email);
 		toaster.pop('success', "Настройки успешно применены.");
 		$location.path('/browse');
