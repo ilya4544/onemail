@@ -38,8 +38,8 @@
         <servlet-class>servlet.GetTokenServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>servlet.SubscriptServlet</servlet-name>
-        <servlet-class>servlet.SubscriptServlet</servlet-class>
+        <servlet-name>servlet.SubscribeServlet</servlet-name>
+        <servlet-class>servlet.SubscribeServlet</servlet-class>
     </servlet>
 
 
@@ -88,7 +88,7 @@
         <url-pattern>/delete</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>servlet.SubscriptServlet</servlet-name>
-        <url-pattern>/subscript</url-pattern>
+        <servlet-name>servlet.SubscribeServlet</servlet-name>
+        <url-pattern>/subscribe</url-pattern>
     </servlet-mapping>
 </web-app>

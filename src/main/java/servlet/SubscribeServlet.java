@@ -18,7 +18,7 @@ import java.net.UnknownHostException;
 /**
  * Created by freeemahn on 21.06.15.
  */
-public class SubscriptServlet extends HttpServlet {
+public class SubscribeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     MongoClient m = null;
     DB db;
