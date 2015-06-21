@@ -81,7 +81,7 @@ public class GetEmailsServlet extends HttpServlet {
         while (cursorEmail.hasNext()) {
             DBObject cur = cursorEmail.next();
             ObjectId t = (ObjectId) cur.removeField("_id");
-            cur.put("_id", t.toString());
+            cur.put("_id", t.toString());//changing from   ObjectId("hex") to hex
             mailList.add(gson.fromJson(cur.toString(), Mail.class));
         }
 

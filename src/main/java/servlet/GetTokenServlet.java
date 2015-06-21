@@ -105,14 +105,10 @@ public class GetTokenServlet extends HttpServlet {
         DBCollection users = db.getCollection("users");
         //AccessToken token = gson.fromJson(result, AccessToken.class);
         AccessToken token = new AccessToken("test", "bbbbbb", "never", "STATE_NY", "Bearer", "000000");
-        User user = new User(token.getUsersIdentifier(), token, token.getId_token(), "VASYA", "gordon.pav@gmail.com");//wow
+        User user = new User(token.getUsersIdentifier(), token, token.getId_token(), "VASYA", "");//wow
         BasicDBObject obj1 = (BasicDBObject) JSON.parse(gson.toJson(user));
         users.insert(obj1);
-        resp.sendRedirect("/sign/test");
-        File f = new File("token.tkn");
-        FileOutputStream fileOutputStream = new FileOutputStream(f);
-        fileOutputStream.write("test".getBytes());
-        fileOutputStream.close();
+        resp.sendRedirect("/shipntrip/#browse");
 
 
     }

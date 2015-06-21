@@ -9,6 +9,8 @@
 <h1>Send an email</h1>
 
 <form action="sendMail" method="post" enctype="multipart/form-data">
+    <input type="text" placeholder="Token" name="token"/>
+    <br>
     <input type="text" placeholder="To" name="to"/>
     <br>
     <input type="text" placeholder="From" name="from"/>
